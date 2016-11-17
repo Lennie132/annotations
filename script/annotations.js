@@ -71,6 +71,13 @@ class AnnotationView extends Backbone.View {
     }
 }
 
+class Annotations extends Backbone.Collection {
+    constructor(options) {
+        super(options);
+        this.model = Annotation;
+    }
+}
+
 class Canvas extends Backbone.Model {
     initialize() {
         //console.log("init: canvas model");
@@ -113,7 +120,6 @@ class CanvasView extends Backbone.View {
     }
 }
 
-
 class ButtonView extends Backbone.View {
 
     id() {
@@ -137,6 +143,45 @@ class ButtonView extends Backbone.View {
 
 }
 
+class Router extends Backbone.Router {
+    routes() {
+        return {
+            "annotations": "annotations",
+            "clock": "clock",
+            "app": "app"
+        };
+    }
+
+    app() {
+        $('#app').append(new CanvasView({model: new Canvas()}).render().el);
+
+        $('#app').append(new ButtonView().render().el);
+    }
+
+    annotations() {
+        var models = [
+            new Annotation({
+                size: 40
+            }),
+            new Annotation({
+                size: 30
+            }),
+            new Annotation({
+                size: 20
+            })
+        ];
+
+        var annotations = new Annotations(models);
+        console.log(annotations);
+        // _(models).each(function (model) {
+        //     $('#app').append(new AnnotationView({model: model}).render().el);
+        // });
+    }
+
+    clock() {
+        $('#app').append(new Clock().render().el);
+    }
+}
 
 class Clock extends Backbone.View {
     initialize() {
@@ -153,39 +198,23 @@ class Clock extends Backbone.View {
 
     render() {
         this.$el.html(new Date().toString());
-        setTimeout( () => this.render(), 1000);
+        setTimeout(() => this.render(), 1000);
 
         return this;
     }
 
 }
 
+// class Events extends Backbone.Events {
+//
+// }
+
 let init = () => {
 
-    var models = [
-        new Annotation({
-            size: 40
-        }),
-        new Annotation({
-            size: 30
-        }),
-        new Annotation({
-            size: 20
-        })
-    ];
+    var router = new Router();
+    Backbone.history.start();
 
-
-    $('#app').append(new CanvasView({model: new Canvas()}).render().el);
-
-    $('#app').append(new Clock().render().el);
-
-
-    $('#app').append(new ButtonView().render().el);
-
-    _(models).each(function (model) {
-        $('#canvas').append(new AnnotationView({model: model}).render().el);
-    });
-
+    router.navigate('annotations', {trigger: true});
 };
 
 init();
