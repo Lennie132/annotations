@@ -21,6 +21,7 @@ class AnnotationView extends Backbone.View {
     initialize() {
         //console.log("init: annotation view");
         this.model.on("change", () => this.render(), this);
+        this.template = _.template($('#template-annotation').html());
     }
 
     tagName() {
@@ -42,6 +43,10 @@ class AnnotationView extends Backbone.View {
         //this.setPosition();
         this.setColor();
 
+        var data = {
+            color: this.model.get('size')
+        };
+        this.$el.html(this.template(data));
         return this;
     }
 
@@ -78,20 +83,15 @@ class Annotations extends Backbone.Collection {
     }
 }
 
-class Canvas extends Backbone.Model {
-    initialize() {
-        //console.log("init: canvas model");
-    }
-}
-
-class CanvasView extends Backbone.View {
+class AnnotationsView extends Backbone.View {
     initialize() {
         //console.log("init: canvas view");
+        this.template = _.template($('#template-canvas').html());
     }
 
     events() {
         return {
-            "click": "makeRectangle"
+            "click #add-annotation": "makeRectangle"
         };
     }
 
@@ -100,15 +100,25 @@ class CanvasView extends Backbone.View {
     }
 
     id() {
-        return "canvas";
+        return "canvas-wrapper";
     }
 
     render() {
+        var data = {
+            addButton: "Voeg annotatie toe",
+            collection: this.collection
+        };
+
+
+        this.$el.html((this.template(data)));
         return this;
     }
 
     makeRectangle() {
-        console.log("click: canvas");
+        console.log("add annotation");
+
+
+
         var block = new AnnotationView({
             model: new Annotation(
                 {
@@ -120,28 +130,6 @@ class CanvasView extends Backbone.View {
     }
 }
 
-class ButtonView extends Backbone.View {
-
-    id() {
-        return "addButton";
-    }
-
-    tagName() {
-        return "button";
-    }
-
-    events() {
-        return {
-            "click": ""
-        };
-    }
-
-    render() {
-        this.$el.html("Een knop");
-        return this;
-    }
-
-}
 
 class Router extends Backbone.Router {
     routes() {
@@ -153,9 +141,20 @@ class Router extends Backbone.Router {
     }
 
     app() {
-        $('#app').append(new CanvasView({model: new Canvas()}).render().el);
+        var models = [
+            new Annotation({
+                size: 40
+            }),
+            new Annotation({
+                size: 30
+            }),
+            new Annotation({
+                size: 20
+            })
+        ];
 
-        $('#app').append(new ButtonView().render().el);
+        var annotationsView = new AnnotationsView({collection: new Annotations(models)});
+        $('#app').append(annotationsView.render().el);
     }
 
     annotations() {
@@ -214,7 +213,7 @@ let init = () => {
     var router = new Router();
     Backbone.history.start();
 
-    router.navigate('annotations', {trigger: true});
+    router.navigate('app', {trigger: true});
 };
 
 init();
