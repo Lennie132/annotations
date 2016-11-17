@@ -3,47 +3,62 @@
  */
 
 
-(function () {
-    var Rectangle = Backbone.Model.extend({});
-    var RectangleView = Backbone.View.extend({
+class Rectangle extends Backbone.Model {
 
-        tagName:'div',
-        className: 'rectangle',
+}
 
-        events: {
-            'click': 'move'
-        },
+class RectangleView extends Backbone.View {
+    constructor() {
+        super();
 
-        render: function () {
-            this.setDemensions();
-            this.setPosition();
-            this.setColor();
-            return this;
-        },
+    }
 
-        setDemensions: function () {
-            this.$el.css({
-                width: this.model.get('width') + 'px',
-                height: this.model.get('height') + 'px'
-                });
-        },
+    tagName() {
+        return "div";
+    }
 
-        setPosition: function () {
-            var position = this.model.get('position');
-            this.$el.css({
-                left: position.x,
-                top: position.y
-            })
-        },
-        
-        setColor: function () {
-            this.$el.css('background-color', this.model.get('color'));
-        },
+    className() {
+        return "rectangle";
+    }
 
-        move: function () {
-            this.$el.css('left', this.$el.position().left + 10);
-        }
-    });
+    events() {
+        return {
+            "click": "move"
+        };
+    }
+
+    render() {
+        this.setDemensions();
+        this.setPosition();
+        this.setColor();
+        return this;
+    }
+
+    setDemensions() {
+        this.$el.css({
+            width: this.model.get('width') + 'px',
+            height: this.model.get('height') + 'px'
+        });
+    }
+
+    setPosition() {
+        var position = this.model.get('position');
+        this.$el.css({
+            left: position.x,
+            top: position.y
+        })
+    }
+
+    setColor() {
+        this.$el.css('background-color', this.model.get('color'));
+    }
+
+    move() {
+        this.$el.css('left', this.$el.position().left + 10);
+    }
+}
+
+let init = () => {
 
     var models = [
         new Rectangle({
@@ -65,9 +80,11 @@
             color: 'green'
         })
     ];
-    
+
     _(models).each(function (model) {
         $('#canvas').append(new RectangleView({model: model}).render().el);
     });
 
-})();
+}
+
+init();
