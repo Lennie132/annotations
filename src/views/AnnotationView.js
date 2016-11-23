@@ -2,8 +2,11 @@
  * Created by Lennart on 20-11-16.
  */
 
+import $ from 'jquery';
+import _ from 'underscore';
+import { View }  from 'backbone';
 
-export default class AnnotationView extends Backbone.View {
+export default class AnnotationView extends View {
     initialize() {
         //console.log("init: annotation view");
         this.model.on("change", () => this.render(), this);

@@ -1,13 +1,14 @@
 /**
  * Created by Lennart on 20-11-16.
  */
+import $ from 'jquery';
+import { Router } from 'backbone';
+import Annotations from '../collections/Annotations';
+import AnnotationsView from '../views/AnnotationsView';
+import Annotation from '../models/Annotation';
+import Clock from '../views/Clock';
 
-import Annotations from './annotations';
-import AnnotationsView from './annotationsView';
-import Annotation from './annotation';
-import Clock from './clock';
-
-export default class Router extends Backbone.Router {
+export default class AppRouter extends Router {
     routes() {
         return {
             "annotations": "annotations",

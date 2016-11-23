@@ -2,7 +2,9 @@
  * Created by Lennart on 20-11-16.
  */
 
-export default class Clock extends Backbone.View {
+import { View } from 'backbone';
+
+export default class Clock extends View {
     initialize() {
         //console.log("init: clock view");
     }

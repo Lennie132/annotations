@@ -4,7 +4,7 @@
 
 //import Backbone from "backbone";
 
-import Annotation from './annotation';
+import Annotation from '../models/Annotation';
 
 export default class Annotations extends Backbone.Collection {
     constructor(options) {

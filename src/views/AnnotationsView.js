@@ -2,11 +2,14 @@
  * Created by Lennart on 20-11-16.
  */
 
-import Annotation from './annotation';
-import AnnotationView from './annotationView';
+import $ from 'jquery';
+import _ from 'underscore';
+import { View } from 'backbone';
+import Annotation from '../models/Annotation';
+import AnnotationView from './AnnotationView';
 
 
-export default class AnnotationsView extends Backbone.View {
+export default class AnnotationsView extends View {
     initialize() {
         //console.log("init: canvas view");
         this.template = _.template($('#template-canvas').html());
