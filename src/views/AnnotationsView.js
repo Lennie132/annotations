@@ -4,7 +4,7 @@
 
 import $ from 'jquery';
 import _ from 'underscore';
-import { View } from 'backbone';
+import {View} from 'backbone';
 import Annotation from '../models/Annotation';
 import AnnotationView from './AnnotationView';
 

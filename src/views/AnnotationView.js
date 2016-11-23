@@ -4,7 +4,7 @@
 
 import $ from 'jquery';
 import _ from 'underscore';
-import { View }  from 'backbone';
+import {View} from 'backbone';
 
 export default class AnnotationView extends View {
     initialize() {

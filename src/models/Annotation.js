@@ -2,12 +2,12 @@
  * Created by Lennart on 20-11-16.
  */
 
-//import Backbone from 'backbone';
+import {Model} from 'backbone';
 
-export default class Annotation extends Backbone.Model {
-    initialize() {
+export default class Annotation extends Model {
+    //initialize() {
         //console.log("init: annotation model");
-    }
+    //}
 
     defaults() {
         return {

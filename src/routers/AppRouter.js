@@ -2,11 +2,13 @@
  * Created by Lennart on 20-11-16.
  */
 import $ from 'jquery';
-import { Router } from 'backbone';
+import _ from 'underscore';
+import {Router} from 'backbone';
 import Annotations from '../collections/Annotations';
 import AnnotationsView from '../views/AnnotationsView';
+import AnnotationView from '../views/AnnotationView';
 import Annotation from '../models/Annotation';
-import Clock from '../views/Clock';
+import ClockView from '../views/ClockView';
 
 export default class AppRouter extends Router {
     routes() {
@@ -31,10 +33,9 @@ export default class AppRouter extends Router {
         ];
 
         var annotations = new Annotations(models);
-        var annotationsView = new AnnotationsView({collection:annotations});
-        //annotations.create({title: "Via collection", description: "jippie", color: "pink", coordinate_x: 20, coordinate_y: 20});
-        annotations.fetch();
-        $('#app').append(annotationsView.render().el);
+        var annotationsView = new AnnotationsView({collection: annotations});
+        //annotations.fetch();
+        $('#app').html(annotationsView.render().el);
     }
 
     annotations() {
@@ -52,12 +53,14 @@ export default class AppRouter extends Router {
 
         var annotations = new Annotations(models);
         console.log(annotations);
-        // _(models).each(function (model) {
-        //     $('#app').append(new AnnotationView({model: model}).render().el);
-        // });
+        $('#app').empty();
+        _(models).each(function (model) {
+            $('#app').append(new AnnotationView({model: model}).render().el);
+        });
     }
 
     clock() {
-        $('#app').append(new Clock().render().el);
+        $('#app').html(new ClockView().render().el);
     }
+
 }
