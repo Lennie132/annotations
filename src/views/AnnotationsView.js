@@ -11,13 +11,18 @@ import AnnotationView from './AnnotationView';
 
 export default class AnnotationsView extends View {
     initialize() {
-        //console.log("init: canvas view");
         this.template = _.template($('#template-canvas').html());
+        var self = this;
+        this.collection.fetch({
+            success: function () {
+                self.render(); // Render after loading
+            }
+        });
     }
 
     events() {
         return {
-            "click #add-annotation": "makeRectangle"
+            "click #add-annotation": "createAnnotation"
         };
     }
 
@@ -29,29 +34,27 @@ export default class AnnotationsView extends View {
         return "canvas-wrapper";
     }
 
+    createAnnotation() {
+        console.log("add annotation");
+
+        this.collection.create({
+            color: 'green'
+        });
+        this.render();
+    }
+
     render() {
         var data = {
-            addButton: "Voeg annotatie toe",
-            collection: this.collection
+            addButton: "Voeg annotatie toe"
         };
 
-
         this.$el.html((this.template(data)));
+
+        this.collection.each((model) => {
+            var annotation = new AnnotationView({model: model});
+            $('#canvas').append(annotation.render().el);
+        });
         return this;
     }
 
-    makeRectangle() {
-        console.log("add annotation");
-
-
-
-        var block = new AnnotationView({
-            model: new Annotation(
-                {
-                    color: 'green'
-                }
-            )
-        });
-        $("#canvas").append(block.render().el);
-    }
 }
