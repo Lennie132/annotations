@@ -32,13 +32,15 @@ export default class AppRouter extends Router {
             })
         ];
 
-        var annotations = new Annotations(models);
+        var annotations = new Annotations();
         var annotationsView = new AnnotationsView({collection: annotations});
-        //annotations.fetch();
+
         $('#app').html(annotationsView.render().el);
     }
 
     annotations() {
+        $('#app').empty();
+
         var models = [
             new Annotation({
                 size: 40
@@ -51,9 +53,6 @@ export default class AppRouter extends Router {
             })
         ];
 
-        var annotations = new Annotations(models);
-        console.log(annotations);
-        $('#app').empty();
         _(models).each(function (model) {
             $('#app').append(new AnnotationView({model: model}).render().el);
         });
