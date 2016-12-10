@@ -9,7 +9,7 @@ export default class Annotation extends Model {
         //console.log("init: annotation model");
     //}
 
-    static defaults() {
+    defaults() {
         return {
             title: "backbone",
             description: "test",
