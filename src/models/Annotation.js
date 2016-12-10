@@ -9,10 +9,14 @@ export default class Annotation extends Model {
         //console.log("init: annotation model");
     //}
 
-    defaults() {
+    static defaults() {
         return {
+            title: "backbone",
+            description: "test",
             color: "red",
-            size: 25
+            size: 25,
+            coordinate_x: 50,
+            coordinate_y: 50
         };
     }
 }
