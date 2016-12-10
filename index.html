@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <title>Annotations</title>
     <link rel="stylesheet" href="style/main.css">
+    <link href="https://fonts.googleapis.com/css?family=Roboto" rel="stylesheet">
 </head>
 <body>
 
@@ -11,24 +12,20 @@
 
 
 <script id="template-canvas" type="text/html">
-    <div id="canvas">
-        <%
-
-        collection.each( (model) => {
-        console.log(model.toJSON());
-        %>
-
-        <div class="annotation"></div>
-
-        <%
-        });
-        %>
-    </div>
+    <div id="canvas"></div>
     <button id="add-annotation"><%= addButton %></button>
 </script>
 
 <script id="template-annotation" type="text/html">
-    <p><%= color %></p>
+<div class="annotation__popup">
+    <h3><%= title %></h3>
+    <p><%= description %></p>
+    <p>Kleur: <%= color %></p>
+    <p>Positie X: <%= coordinate_x %>%</p>
+    <p>Positie Y: <%= coordinate_y %>%</p>
+    <input type="radio">
+    <button class="annotation__delete">Verwijder</button>
+</div>
 </script>
 
 <script id="template-clock" type="text/html">
