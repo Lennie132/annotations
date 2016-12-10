@@ -11,27 +11,8 @@ export default class AnnotationView extends View {
         //console.log("init: annotation view");
         this.model.on("change", () => this.render(), this);
         this.template = _.template($('#template-annotation').html());
-
-        var data = {
-            title: "Via backbone yesss",
-            description: "Deze is in backbone aangemaakt door initialize",
-            color: "yellow",
-            coordinate_x: 66,
-            coordinate_y: 66
-        };
-
-        // this.model.save(data, {
-        //     success: function(model, response) {
-        //         console.log(model);
-        //         console.log(response);
-        //         //o.render();
-        //         console.log('success');
-        //     },
-        //     error: function(model, response) {
-        //         console.log(model);
-        //     }
-        //      //wait: true // Add this
-        // });
+        this.mousedown = false;
+        this.positionchanged = false;
     }
 
     tagName() {
@@ -44,44 +25,93 @@ export default class AnnotationView extends View {
 
     events() {
         return {
-            "click": "onClick"
+            "click": "openDetails",
+            "click .annotation__delete": "delete",
+            "mousedown": "moveStart",
+            "mouseup": "moveStop",
+            "mouseout": "moveStop",
+            "mousemove": "moveElement"
         };
     }
 
     render() {
-        this.setDemensions();
-        //this.setPosition();
+        this.setSize(this.model.get('size'));
+        this.setPosition(this.model.get('coordinate_x'), this.model.get('coordinate_y'));
         this.setColor();
 
-        var data = {
-            color: this.model.get('size')
-        };
-        this.$el.html(this.template(data));
+        this.$el.html(this.template(this.model.toJSON()));
         return this;
     }
 
-
-    setDemensions() {
-        this.$el.css({
-            width: this.model.get('size') + 'px',
-            height: this.model.get('size') + 'px'
-        });
+    delete() {
+        this.model.destroy();
+        this.remove();
     }
 
-    setPosition() {
-        var position = this.model.get('position');
-        this.$el.css({
-            left: position.x,
-            top: position.y
-        })
+    moveStart() {
+        this.mousedown = true;
+    }
+
+    moveStop(event) {
+        this.mousedown = false;
+        if (this.positionchanged) {
+            let position = this.getPosition(event);
+            this.model.save({coordinate_x: position.x, coordinate_y: position.y});
+            this.positionchanged = false;
+        }
+    }
+
+    moveElement(event) {
+        if (this.mousedown) {
+            let position = this.getPosition(event);
+            this.setPosition(position.x, position.y);
+            this.positionchanged = true;
+        }
     }
 
     setColor() {
-        this.$el.css({"background-color": this.model.get('color')});
+        this.$el.addClass("annotation--" + this.model.get('color'));
     }
 
-    onClick() {
-        console.log("click: annotation");
-        this.model.set("color", "orange");
+    setSize(size) {
+        this.$el.css({
+            width: size + 'px',
+            height: size + 'px'
+        });
+    }
+
+    /**
+     * Sets the position on the canvas
+     * @param x
+     * @param y
+     */
+    setPosition(x, y) {
+        this.$el.css({
+            left: x + '%',
+            top: y + '%'
+        });
+    }
+
+    /**
+     * Gives the position of the annotation relative to the canvas
+     * @param event
+     * @returns {{x: number, y: number}}
+     */
+    getPosition(event) {
+        const canvas = $("#canvas");
+
+        // relative position in pixels
+        let relativeX = event.clientX - canvas.offset().left - this.$el.width() / 2;
+        let relativeY = event.clientY - canvas.offset().top - this.$el.height() / 2;
+
+        // relative position in procenten
+        let x = (relativeX / canvas.width() * 100);
+        let y = (relativeY / canvas.height() * 100);
+
+        return {x: x, y: y};
+    }
+
+    openDetails() {
+        this.$('.annotation__popup').toggleClass("annotation__popup--visible");
     }
 }
