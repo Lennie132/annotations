@@ -8,8 +8,7 @@ import Annotation from '../models/Annotation';
 export default class Annotations extends Collection {
     constructor(options) {
         super(options);
-        this.url = "https://stud.hosted.hr.nl/0893738/api/annotations/";
-
+        this.url = "http://lennartv.nl/api/";
         this.model = Annotation;
     }
 
