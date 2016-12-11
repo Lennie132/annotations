@@ -10,7 +10,7 @@ import AppRouter from './routers/AppRouter';
 // }
 
 let init = () => {
-    var router = new AppRouter();
+    let router = new AppRouter();
     Backbone.history.start();
 
     router.navigate('app', {trigger: true});
