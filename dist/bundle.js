@@ -15713,7 +15713,6 @@
 	        value: function initialize() {
 	            var _this2 = this;
 
-	            //console.log("init: annotation view");
 	            this.model.on("change", function () {
 	                return _this2.render();
 	            }, this);
@@ -15735,8 +15734,10 @@
 	        key: 'events',
 	        value: function events() {
 	            return {
-	                "click": "openDetails",
+	                "click .annotation__dot": "openDetails",
+	                "click .annotation__close-details": "closeDetails",
 	                "click .annotation__delete": "delete",
+	                "click .annotation__color": "changeColor",
 	                "mousedown": "moveStart",
 	                "mouseup": "moveStop",
 	                "mouseout": "moveStop",
@@ -15746,11 +15747,10 @@
 	    }, {
 	        key: 'render',
 	        value: function render() {
+	            this.$el.html(this.template(this.model.toJSON()));
 	            this.setSize(this.model.get('size'));
 	            this.setPosition(this.model.get('coordinate_x'), this.model.get('coordinate_y'));
 	            this.setColor();
-
-	            this.$el.html(this.template(this.model.toJSON()));
 	            return this;
 	        }
 	    }, {
@@ -15789,8 +15789,18 @@
 	            this.$el.addClass("annotation--" + this.model.get('color'));
 	        }
 	    }, {
+	        key: 'changeColor',
+	        value: function changeColor(event) {
+	            var color = (0, _jquery2.default)(event.target).data('color');
+	            this.model.save({ color: color });
+	        }
+	    }, {
 	        key: 'setSize',
 	        value: function setSize(size) {
+	            this.$(".annotation__dot").css({
+	                width: size + 'px',
+	                height: size + 'px'
+	            });
 	            this.$el.css({
 	                width: size + 'px',
 	                height: size + 'px'
@@ -15836,7 +15846,13 @@
 	    }, {
 	        key: 'openDetails',
 	        value: function openDetails() {
-	            this.$('.annotation__popup').toggleClass("annotation__popup--visible");
+	            (0, _jquery2.default)('.annotation__details').removeClass("annotation__details--visible");
+	            this.$('.annotation__details').addClass("annotation__details--visible");
+	        }
+	    }, {
+	        key: 'closeDetails',
+	        value: function closeDetails() {
+	            this.$('.annotation__details').removeClass("annotation__details--visible");
 	        }
 	    }]);
 

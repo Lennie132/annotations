@@ -3,7 +3,6 @@
   src: url('../fonts/Segment-7.otf');
 }
 body {
-  background-color: aliceblue;
   font-family: 'Roboto', sans-serif;
 }
 #canvas {
@@ -20,7 +19,13 @@ body {
   color: white;
   border: none;
 }
+#add-annotation:hover {
+  background-color: #545f5b;
+}
 .annotation {
+  position: absolute;
+}
+.annotation .annotation__dot {
   position: absolute;
   float: left;
   border: 1px solid #979f9d;
@@ -29,7 +34,7 @@ body {
   -moz-box-sizing: border-box;
   -webkit-box-sizing: border-box;
 }
-.annotation .annotation__popup {
+.annotation .annotation__details {
   display: none;
   position: absolute;
   background: white;
@@ -40,27 +45,80 @@ body {
   -webkit-border-radius: 2px;
   -moz-border-radius: 2px;
   border-radius: 2px;
+  border: 1px solid #979f9d;
   z-index: 10;
 }
-.annotation .annotation__popup.annotation__popup--visible {
+.annotation .annotation__details.annotation__details--visible {
   display: block;
 }
-.annotation .annotation__popup .annotation__delete {
-  padding: 10px 20px;
-  background-color: #d80021;
-  color: white;
-  border: none;
+.annotation .annotation__details .annotation__close-details {
+  float: right;
   cursor: pointer;
 }
-.annotation .annotation__popup .annotation__delete:hover {
-  background-color: #bf001d;
+.annotation .annotation__details .annotation__close-details:hover {
+  color: #d80021;
 }
-.annotation.annotation--green {
+.annotation .annotation__details .annotation__delete {
+  float: right;
+  cursor: pointer;
+}
+.annotation .annotation__details .annotation__delete:hover {
+  color: #d80021;
+}
+.annotation .annotation__details .annotation__color {
+  display: inline-block;
+  width: 20px;
+  height: 20px;
+  border: 1px solid #979f9d;
+  border-radius: 50%;
+  box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  -webkit-box-sizing: border-box;
+  cursor: pointer;
+}
+.annotation .annotation__details .annotation__color.annotation__color--blue {
+  background-color: steelblue;
+  border: 3px solid #3f75a2;
+}
+.annotation .annotation__details .annotation__color.annotation__color--green {
   background-color: forestgreen;
   border: 3px solid #1d771d;
 }
-.annotation.annotation--green .annotation__popup {
-  border: 1px solid forestgreen;
+.annotation .annotation__details .annotation__color.annotation__color--red {
+  background-color: rgba(217, 0, 0, 0.81);
+  border: 3px solid rgba(192, 0, 0, 0.81);
+}
+.annotation .annotation__details .annotation__color.annotation__color--orange {
+  background-color: #eb9416;
+  border: 3px solid #d58612;
+}
+.annotation.annotation--green .annotation__dot {
+  background-color: forestgreen;
+  border: 3px solid #1d771d;
+}
+.annotation.annotation--green .annotation__details {
+  border: 2px solid forestgreen;
+}
+.annotation.annotation--blue .annotation__dot {
+  background-color: steelblue;
+  border: 3px solid #3f75a2;
+}
+.annotation.annotation--blue .annotation__details {
+  border: 1px solid steelblue;
+}
+.annotation.annotation--red .annotation__dot {
+  background-color: rgba(217, 0, 0, 0.81);
+  border: 3px solid rgba(192, 0, 0, 0.81);
+}
+.annotation.annotation--red .annotation__details {
+  border: 1px solid rgba(217, 0, 0, 0.81);
+}
+.annotation.annotation--orange .annotation__dot {
+  background-color: #eb9416;
+  border: 3px solid #d58612;
+}
+.annotation.annotation--orange .annotation__details {
+  border: 1px solid #eb9416;
 }
 .clock {
   width: 800px;

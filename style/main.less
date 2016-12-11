@@ -1,10 +1,16 @@
+@grey: #979f9d;
+@green: forestgreen;
+@blue: steelblue;
+@orange: #eb9416;
+@red: rgba(217, 0, 0, 0.81);
+
 @font-face {
     font-family: 'Segment7';
     src: url('../fonts/Segment-7.otf');
 }
 
 body {
-    background-color: aliceblue;
+    //background-color: aliceblue;
     font-family: 'Roboto', sans-serif;
 }
 
@@ -13,7 +19,7 @@ body {
     margin: 30px auto 0 auto;
     height: 300px;
     width: 500px;
-    border: 1px solid #979f9d;
+    border: 1px solid @grey;
     background-color: #ffffff;
 }
 
@@ -22,18 +28,24 @@ body {
     background-color: #606c68;
     color: white;
     border: none;
+    &:hover {
+        background-color: darken(#606c68, 5%);
+    }
 }
 
 .annotation {
     position: absolute;
-    float: left;
-    border: 1px solid #979f9d;
-    border-radius: 50%;
-    box-sizing: border-box;
-    -moz-box-sizing: border-box;
-    -webkit-box-sizing: border-box;
 
-    .annotation__popup {
+    .annotation__dot {
+        position: absolute;
+        float: left;
+        border: 1px solid @grey;
+        border-radius: 50%;
+        box-sizing: border-box;
+        -moz-box-sizing: border-box;
+        -webkit-box-sizing: border-box;
+    }
+    .annotation__details {
         display: none;
         position: absolute;
         background: white;
@@ -44,40 +56,93 @@ body {
         -webkit-border-radius: 2px;
         -moz-border-radius: 2px;
         border-radius: 2px;
+        border: 1px solid @grey;
         z-index: 10;
 
-        &.annotation__popup--visible {
+        &.annotation__details--visible {
             display: block;
         }
 
-        .annotation__delete {
-            padding: 10px 20px;
-            background-color: #d80021;
-            color: white;
-            border: none;
+        .annotation__close-details {
+            float: right;
             cursor: pointer;
             &:hover {
-                background-color: darken(#d80021, 5%);
+                color: #d80021;
+            }
+        }
+
+        .annotation__delete {
+            float: right;
+            cursor: pointer;
+            &:hover {
+                color: #d80021;
+            }
+        }
+
+        .annotation__color {
+            display: inline-block;
+            width: 20px;
+            height: 20px;
+            border: 1px solid #979f9d;
+            border-radius: 50%;
+            box-sizing: border-box;
+            -moz-box-sizing: border-box;
+            -webkit-box-sizing: border-box;
+            cursor: pointer;
+            &.annotation__color--blue {
+                background-color: @blue;
+                border: 3px solid darken(@blue, 5%);
+            }
+            &.annotation__color--green {
+                background-color: @green;
+                border: 3px solid darken(@green, 5%);
+            }
+            &.annotation__color--red {
+                background-color: @red;
+                border: 3px solid darken(@red, 5%);
+            }
+            &.annotation__color--orange {
+                background-color: @orange;
+                border: 3px solid darken(@orange, 5%);
             }
         }
     }
 
-
     &.annotation--green {
-        background-color: forestgreen;
-        border: 3px solid darken(forestgreen, 5%);
-        .annotation__popup {
-            border: 1px solid forestgreen;
+        .annotation__dot {
+            background-color: @green;
+            border: 3px solid darken(@green, 5%);
+        }
+        .annotation__details {
+            border: 2px solid @green;
         }
     }
-    &.annotation--green {
-
+    &.annotation--blue {
+        .annotation__dot {
+            background-color: @blue;
+            border: 3px solid darken(@blue, 5%);
+        }
+        .annotation__details {
+            border: 1px solid @blue;
+        }
     }
-    &.annotation--green {
-
+    &.annotation--red {
+        .annotation__dot {
+            background-color: @red;
+            border: 3px solid darken(@red, 5%);
+        }
+        .annotation__details {
+            border: 1px solid @red;
+        }
     }
-    &.annotation--green {
-
+    &.annotation--orange {
+        .annotation__dot {
+            background-color: @orange;
+            border: 3px solid darken(@orange, 5%);
+        }
+        .annotation__details {
+            border: 1px solid @orange;
+        }
     }
 }
 
@@ -89,9 +154,9 @@ body {
     -webkit-border-radius: 12px;
     -moz-border-radius: 12px;
     border-radius: 12px;
-    -webkit-box-shadow: 3px 3px 15px 2px rgba(0,0,0,0.75);
-    -moz-box-shadow: 3px 3px 15px 2px rgba(0,0,0,0.75);
-    box-shadow: 3px 3px 15px 2px rgba(0,0,0,0.75);
+    -webkit-box-shadow: 3px 3px 15px 2px rgba(0, 0, 0, 0.75);
+    -moz-box-shadow: 3px 3px 15px 2px rgba(0, 0, 0, 0.75);
+    box-shadow: 3px 3px 15px 2px rgba(0, 0, 0, 0.75);
     span {
         font-family: 'Segment7', monospace;
         font-size: 160px;

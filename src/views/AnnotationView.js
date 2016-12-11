@@ -8,7 +8,6 @@ import {View} from 'backbone';
 
 export default class AnnotationView extends View {
     initialize() {
-        //console.log("init: annotation view");
         this.model.on("change", () => this.render(), this);
         this.template = _.template($('#template-annotation').html());
         this.mousedown = false;
@@ -25,8 +24,10 @@ export default class AnnotationView extends View {
 
     events() {
         return {
-            "click": "openDetails",
+            "click .annotation__dot": "openDetails",
+            "click .annotation__close-details": "closeDetails",
             "click .annotation__delete": "delete",
+            "click .annotation__color": "changeColor",
             "mousedown": "moveStart",
             "mouseup": "moveStop",
             "mouseout": "moveStop",
@@ -35,11 +36,10 @@ export default class AnnotationView extends View {
     }
 
     render() {
+        this.$el.html(this.template(this.model.toJSON()));
         this.setSize(this.model.get('size'));
         this.setPosition(this.model.get('coordinate_x'), this.model.get('coordinate_y'));
         this.setColor();
-
-        this.$el.html(this.template(this.model.toJSON()));
         return this;
     }
 
@@ -73,7 +73,16 @@ export default class AnnotationView extends View {
         this.$el.addClass("annotation--" + this.model.get('color'));
     }
 
+    changeColor(event) {
+        let color = $(event.target).data('color');
+        this.model.save({color: color});
+    }
+
     setSize(size) {
+        this.$(".annotation__dot").css({
+            width: size + 'px',
+            height: size + 'px'
+        });
         this.$el.css({
             width: size + 'px',
             height: size + 'px'
@@ -112,6 +121,11 @@ export default class AnnotationView extends View {
     }
 
     openDetails() {
-        this.$('.annotation__popup').toggleClass("annotation__popup--visible");
+        $('.annotation__details').removeClass("annotation__details--visible");
+        this.$('.annotation__details').addClass("annotation__details--visible");
+    }
+
+    closeDetails() {
+        this.$('.annotation__details').removeClass("annotation__details--visible");
     }
 }
