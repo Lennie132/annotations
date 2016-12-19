@@ -5,10 +5,6 @@
 import Backbone from 'backbone';
 import AppRouter from './routers/AppRouter';
 
-// class Events extends Backbone.Events {
-//
-// }
-
 let init = () => {
     let router = new AppRouter();
     Backbone.history.start();

@@ -7,20 +7,33 @@ body {
 }
 #canvas {
   position: relative;
-  margin: 30px auto 0 auto;
+  margin: 0 auto;
+  padding: 0;
   height: 300px;
-  width: 500px;
   border: 1px solid #979f9d;
   background-color: #ffffff;
 }
+#annotation-title,
+#annotation-description,
+#annotation-color,
 #add-annotation {
-  padding: 10px 20px;
+  width: 100%;
+  min-width: 100%;
+  max-width: 100%;
+  max-height: 143px;
+  margin: 0 0 15px 0;
+  padding: 10px 14px;
+  color: #979f9d;
+  border: 1px solid #979f9d;
+}
+#add-annotation {
   background-color: #606c68;
+  padding-bottom: 5px;
   color: white;
   border: none;
 }
 #add-annotation:hover {
-  background-color: #545f5b;
+  background-color: forestgreen;
 }
 .annotation {
   position: absolute;
@@ -92,6 +105,18 @@ body {
   background-color: #eb9416;
   border: 3px solid #d58612;
 }
+.annotation .annotation__details .annotation__title {
+  width: 100%;
+  margin-bottom: 5px;
+  border: none;
+  font-weight: bold;
+}
+.annotation .annotation__details .annotation__description {
+  width: 100%;
+  min-width: 100%;
+  max-width: 100%;
+  border: none;
+}
 .annotation.annotation--green .annotation__dot {
   background-color: forestgreen;
   border: 3px solid #1d771d;
@@ -104,26 +129,26 @@ body {
   border: 3px solid #3f75a2;
 }
 .annotation.annotation--blue .annotation__details {
-  border: 1px solid steelblue;
+  border: 2px solid steelblue;
 }
 .annotation.annotation--red .annotation__dot {
   background-color: rgba(217, 0, 0, 0.81);
   border: 3px solid rgba(192, 0, 0, 0.81);
 }
 .annotation.annotation--red .annotation__details {
-  border: 1px solid rgba(217, 0, 0, 0.81);
+  border: 2px solid rgba(217, 0, 0, 0.81);
 }
 .annotation.annotation--orange .annotation__dot {
   background-color: #eb9416;
   border: 3px solid #d58612;
 }
 .annotation.annotation--orange .annotation__details {
-  border: 1px solid #eb9416;
+  border: 2px solid #eb9416;
 }
 .clock {
-  width: 800px;
-  margin: 30px auto;
-  padding: 30px 0 0 0;
+  width: 100%;
+  margin: 20px auto;
+  padding: 15px 0 0 0;
   background-color: #000000;
   -webkit-border-radius: 12px;
   -moz-border-radius: 12px;
@@ -134,7 +159,7 @@ body {
 }
 .clock span {
   font-family: 'Segment7', monospace;
-  font-size: 160px;
-  line-height: 170px;
+  font-size: 120px;
+  line-height: 137px;
   color: #00ff0d;
 }
