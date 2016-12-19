@@ -56,10 +56,6 @@
 
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-	// class Events extends Backbone.Events {
-	//
-	// }
-
 	/**
 	 * Created by Lennart on 20-11-16.
 	 */
@@ -13796,29 +13792,25 @@
 
 	var _jquery2 = _interopRequireDefault(_jquery);
 
-	var _underscore = __webpack_require__(5);
-
-	var _underscore2 = _interopRequireDefault(_underscore);
-
 	var _backbone = __webpack_require__(1);
 
-	var _Annotations = __webpack_require__(6);
+	var _Annotations = __webpack_require__(5);
 
 	var _Annotations2 = _interopRequireDefault(_Annotations);
 
-	var _AnnotationsView = __webpack_require__(8);
+	var _AnnotationsView = __webpack_require__(7);
 
 	var _AnnotationsView2 = _interopRequireDefault(_AnnotationsView);
 
-	var _AnnotationView = __webpack_require__(9);
+	var _AnnotationsListView = __webpack_require__(10);
 
-	var _AnnotationView2 = _interopRequireDefault(_AnnotationView);
+	var _AnnotationsListView2 = _interopRequireDefault(_AnnotationsListView);
 
-	var _Annotation = __webpack_require__(7);
+	var _NavigationView = __webpack_require__(11);
 
-	var _Annotation2 = _interopRequireDefault(_Annotation);
+	var _NavigationView2 = _interopRequireDefault(_NavigationView);
 
-	var _ClockView = __webpack_require__(10);
+	var _ClockView = __webpack_require__(12);
 
 	var _ClockView2 = _interopRequireDefault(_ClockView);
 
@@ -13832,7 +13824,9 @@
 	                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                * Created by Lennart on 20-11-16.
 	                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                */
 
-
+	/**
+	 * Router for the navigation between pages
+	 */
 	var AppRouter = function (_Router) {
 	    _inherits(AppRouter, _Router);
 
@@ -13852,16 +13846,14 @@
 	            };
 	        }
 	    }, {
+	        key: 'initialize',
+	        value: function initialize() {
+	            var navigation = new _NavigationView2.default(this);
+	            (0, _jquery2.default)('#navigation').prepend(navigation.render().el);
+	        }
+	    }, {
 	        key: 'app',
 	        value: function app() {
-	            var models = [new _Annotation2.default({
-	                size: 40
-	            }), new _Annotation2.default({
-	                size: 30
-	            }), new _Annotation2.default({
-	                size: 20
-	            })];
-
 	            var annotations = new _Annotations2.default();
 	            var annotationsView = new _AnnotationsView2.default({ collection: annotations });
 
@@ -13870,19 +13862,10 @@
 	    }, {
 	        key: 'annotations',
 	        value: function annotations() {
-	            (0, _jquery2.default)('#app').empty();
+	            var annotations = new _Annotations2.default();
+	            var annotationsListView = new _AnnotationsListView2.default({ collection: annotations });
 
-	            var models = [new _Annotation2.default({
-	                size: 40
-	            }), new _Annotation2.default({
-	                size: 30
-	            }), new _Annotation2.default({
-	                size: 20
-	            })];
-
-	            (0, _underscore2.default)(models).each(function (model) {
-	                (0, _jquery2.default)('#app').append(new _AnnotationView2.default({ model: model }).render().el);
-	            });
+	            (0, _jquery2.default)('#app').html(annotationsListView.render().el);
 	        }
 	    }, {
 	        key: 'clock',
@@ -13898,6 +13881,232 @@
 
 /***/ },
 /* 5 */
+/***/ function(module, exports, __webpack_require__) {
+
+	"use strict";
+
+	Object.defineProperty(exports, "__esModule", {
+	    value: true
+	});
+
+	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+	var _backbone = __webpack_require__(1);
+
+	var _Annotation = __webpack_require__(6);
+
+	var _Annotation2 = _interopRequireDefault(_Annotation);
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+	function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; } /**
+	                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                * Created by Lennart on 17-11-16.
+	                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                */
+
+	/**
+	 * The collection for all the annotations
+	 */
+	var Annotations = function (_Collection) {
+	    _inherits(Annotations, _Collection);
+
+	    function Annotations(options) {
+	        _classCallCheck(this, Annotations);
+
+	        var _this = _possibleConstructorReturn(this, (Annotations.__proto__ || Object.getPrototypeOf(Annotations)).call(this, options));
+
+	        _this.url = "http://lennartv.nl/api/";
+	        _this.model = _Annotation2.default;
+	        return _this;
+	    }
+
+	    _createClass(Annotations, [{
+	        key: "parse",
+	        value: function parse(data) {
+	            return data.items;
+	        }
+	    }]);
+
+	    return Annotations;
+	}(_backbone.Collection);
+
+	exports.default = Annotations;
+
+/***/ },
+/* 6 */
+/***/ function(module, exports, __webpack_require__) {
+
+	"use strict";
+
+	Object.defineProperty(exports, "__esModule", {
+	    value: true
+	});
+
+	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+	var _backbone = __webpack_require__(1);
+
+	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+	function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; } /**
+	                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                * Created by Lennart on 20-11-16.
+	                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                */
+
+	/**
+	 * One model for an annotation
+	 */
+	var Annotation = function (_Model) {
+	    _inherits(Annotation, _Model);
+
+	    function Annotation() {
+	        _classCallCheck(this, Annotation);
+
+	        return _possibleConstructorReturn(this, (Annotation.__proto__ || Object.getPrototypeOf(Annotation)).apply(this, arguments));
+	    }
+
+	    _createClass(Annotation, [{
+	        key: "defaults",
+	        value: function defaults() {
+	            return {
+	                title: "backbone",
+	                description: "test",
+	                color: "red",
+	                size: 25,
+	                coordinate_x: 50,
+	                coordinate_y: 50
+	            };
+	        }
+	    }]);
+
+	    return Annotation;
+	}(_backbone.Model);
+
+	exports.default = Annotation;
+
+/***/ },
+/* 7 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	Object.defineProperty(exports, "__esModule", {
+	    value: true
+	});
+
+	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+	var _jquery = __webpack_require__(3);
+
+	var _jquery2 = _interopRequireDefault(_jquery);
+
+	var _underscore = __webpack_require__(8);
+
+	var _underscore2 = _interopRequireDefault(_underscore);
+
+	var _backbone = __webpack_require__(1);
+
+	var _AnnotationView = __webpack_require__(9);
+
+	var _AnnotationView2 = _interopRequireDefault(_AnnotationView);
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+	function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; } /**
+	                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                * Created by Lennart on 20-11-16.
+	                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                */
+
+	var AnnotationsView = function (_View) {
+	    _inherits(AnnotationsView, _View);
+
+	    function AnnotationsView() {
+	        _classCallCheck(this, AnnotationsView);
+
+	        return _possibleConstructorReturn(this, (AnnotationsView.__proto__ || Object.getPrototypeOf(AnnotationsView)).apply(this, arguments));
+	    }
+
+	    _createClass(AnnotationsView, [{
+	        key: 'initialize',
+	        value: function initialize() {
+	            this.template = _underscore2.default.template((0, _jquery2.default)('#template-canvas').html());
+	            var self = this;
+	            this.collection.fetch({
+	                success: function success() {
+	                    self.render();
+	                }
+	            });
+	        }
+	    }, {
+	        key: 'events',
+	        value: function events() {
+	            return {
+	                "click #add-annotation": "createAnnotation"
+	            };
+	        }
+	    }, {
+	        key: 'tagName',
+	        value: function tagName() {
+	            return "div";
+	        }
+	    }, {
+	        key: 'id',
+	        value: function id() {
+	            return "canvas-wrapper";
+	        }
+	    }, {
+	        key: 'createAnnotation',
+	        value: function createAnnotation() {
+	            var title = this.$('#annotation-title').val();
+	            var description = this.$('#annotation-description').val();
+	            var color = this.$('#annotation-color').val();
+
+	            if (title == "") {
+	                title = "new Annotation";
+	            }
+
+	            if (description == "") {
+	                description = "description of this annotation";
+	            }
+
+	            this.collection.create({
+	                title: title,
+	                description: description,
+	                color: color
+	            });
+	            this.render();
+	        }
+	    }, {
+	        key: 'render',
+	        value: function render() {
+	            var data = {
+	                addButton: "Voeg annotatie toe"
+	            };
+
+	            this.$el.html(this.template(data));
+
+	            this.collection.each(function (model) {
+	                var annotation = new _AnnotationView2.default({ model: model });
+	                (0, _jquery2.default)('#canvas').append(annotation.render().el);
+	            });
+	            return this;
+	        }
+	    }]);
+
+	    return AnnotationsView;
+	}(_backbone.View);
+
+	exports.default = AnnotationsView;
+
+/***/ },
+/* 8 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;//     Underscore.js 1.8.3
@@ -15451,223 +15660,6 @@
 
 
 /***/ },
-/* 6 */
-/***/ function(module, exports, __webpack_require__) {
-
-	"use strict";
-
-	Object.defineProperty(exports, "__esModule", {
-	    value: true
-	});
-
-	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
-
-	var _backbone = __webpack_require__(1);
-
-	var _Annotation = __webpack_require__(7);
-
-	var _Annotation2 = _interopRequireDefault(_Annotation);
-
-	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-
-	function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
-
-	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; } /**
-	                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                * Created by Lennart on 17-11-16.
-	                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                */
-
-	var Annotations = function (_Collection) {
-	    _inherits(Annotations, _Collection);
-
-	    function Annotations(options) {
-	        _classCallCheck(this, Annotations);
-
-	        var _this = _possibleConstructorReturn(this, (Annotations.__proto__ || Object.getPrototypeOf(Annotations)).call(this, options));
-
-	        _this.url = "http://lennartv.nl/api/";
-	        _this.model = _Annotation2.default;
-	        return _this;
-	    }
-
-	    _createClass(Annotations, [{
-	        key: "parse",
-	        value: function parse(data) {
-	            return data.items;
-	        }
-	    }]);
-
-	    return Annotations;
-	}(_backbone.Collection);
-
-	exports.default = Annotations;
-
-/***/ },
-/* 7 */
-/***/ function(module, exports, __webpack_require__) {
-
-	"use strict";
-
-	Object.defineProperty(exports, "__esModule", {
-	    value: true
-	});
-
-	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
-
-	var _backbone = __webpack_require__(1);
-
-	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-
-	function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
-
-	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; } /**
-	                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                * Created by Lennart on 20-11-16.
-	                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                */
-
-	var Annotation = function (_Model) {
-	    _inherits(Annotation, _Model);
-
-	    function Annotation() {
-	        _classCallCheck(this, Annotation);
-
-	        return _possibleConstructorReturn(this, (Annotation.__proto__ || Object.getPrototypeOf(Annotation)).apply(this, arguments));
-	    }
-
-	    _createClass(Annotation, [{
-	        key: "defaults",
-
-	        //initialize() {
-	        //console.log("init: annotation model");
-	        //}
-
-	        value: function defaults() {
-	            return {
-	                title: "backbone",
-	                description: "test",
-	                color: "red",
-	                size: 25,
-	                coordinate_x: 50,
-	                coordinate_y: 50
-	            };
-	        }
-	    }]);
-
-	    return Annotation;
-	}(_backbone.Model);
-
-	exports.default = Annotation;
-
-/***/ },
-/* 8 */
-/***/ function(module, exports, __webpack_require__) {
-
-	'use strict';
-
-	Object.defineProperty(exports, "__esModule", {
-	    value: true
-	});
-
-	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
-
-	var _jquery = __webpack_require__(3);
-
-	var _jquery2 = _interopRequireDefault(_jquery);
-
-	var _underscore = __webpack_require__(5);
-
-	var _underscore2 = _interopRequireDefault(_underscore);
-
-	var _backbone = __webpack_require__(1);
-
-	var _Annotation = __webpack_require__(7);
-
-	var _Annotation2 = _interopRequireDefault(_Annotation);
-
-	var _AnnotationView = __webpack_require__(9);
-
-	var _AnnotationView2 = _interopRequireDefault(_AnnotationView);
-
-	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-
-	function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
-
-	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; } /**
-	                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                * Created by Lennart on 20-11-16.
-	                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                */
-
-	var AnnotationsView = function (_View) {
-	    _inherits(AnnotationsView, _View);
-
-	    function AnnotationsView() {
-	        _classCallCheck(this, AnnotationsView);
-
-	        return _possibleConstructorReturn(this, (AnnotationsView.__proto__ || Object.getPrototypeOf(AnnotationsView)).apply(this, arguments));
-	    }
-
-	    _createClass(AnnotationsView, [{
-	        key: 'initialize',
-	        value: function initialize() {
-	            this.template = _underscore2.default.template((0, _jquery2.default)('#template-canvas').html());
-	            var self = this;
-	            this.collection.fetch({
-	                success: function success() {
-	                    self.render(); // Render after loading
-	                }
-	            });
-	        }
-	    }, {
-	        key: 'events',
-	        value: function events() {
-	            return {
-	                "click #add-annotation": "createAnnotation"
-	            };
-	        }
-	    }, {
-	        key: 'tagName',
-	        value: function tagName() {
-	            return "div";
-	        }
-	    }, {
-	        key: 'id',
-	        value: function id() {
-	            return "canvas-wrapper";
-	        }
-	    }, {
-	        key: 'createAnnotation',
-	        value: function createAnnotation() {
-	            console.log("add annotation");
-
-	            this.collection.create({
-	                color: 'green'
-	            });
-	            this.render();
-	        }
-	    }, {
-	        key: 'render',
-	        value: function render() {
-	            var data = {
-	                addButton: "Voeg annotatie toe"
-	            };
-
-	            this.$el.html(this.template(data));
-
-	            this.collection.each(function (model) {
-	                var annotation = new _AnnotationView2.default({ model: model });
-	                (0, _jquery2.default)('#canvas').append(annotation.render().el);
-	            });
-	            return this;
-	        }
-	    }]);
-
-	    return AnnotationsView;
-	}(_backbone.View);
-
-	exports.default = AnnotationsView;
-
-/***/ },
 /* 9 */
 /***/ function(module, exports, __webpack_require__) {
 
@@ -15683,7 +15675,7 @@
 
 	var _jquery2 = _interopRequireDefault(_jquery);
 
-	var _underscore = __webpack_require__(5);
+	var _underscore = __webpack_require__(8);
 
 	var _underscore2 = _interopRequireDefault(_underscore);
 
@@ -15699,6 +15691,11 @@
 	                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                * Created by Lennart on 20-11-16.
 	                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                */
 
+	/**
+	 * This model is for the annotations. A annotation is shown as a dot which you can drag around. You can click on an
+	 * annotation to open a popup. There you can change the title, description and color. You can also delete the annotation
+	 * and close the popup.
+	 */
 	var AnnotationView = function (_View) {
 	    _inherits(AnnotationView, _View);
 
@@ -15738,10 +15735,12 @@
 	                "click .annotation__close-details": "closeDetails",
 	                "click .annotation__delete": "delete",
 	                "click .annotation__color": "changeColor",
-	                "mousedown": "moveStart",
-	                "mouseup": "moveStop",
-	                "mouseout": "moveStop",
-	                "mousemove": "moveElement"
+	                "change .annotation__title": "changeTitle",
+	                "change .annotation__description": "changeDescription",
+	                "mousedown  .annotation__dot": "moveStart",
+	                "mouseup  .annotation__dot": "moveStop",
+	                "mouseout  .annotation__dot": "moveStop",
+	                "mousemove  .annotation__dot": "moveElement"
 	            };
 	        }
 	    }, {
@@ -15759,11 +15758,37 @@
 	            this.model.destroy();
 	            this.remove();
 	        }
+
+	        /**
+	         * If mouse is down register this for moving functions
+	         */
+
 	    }, {
 	        key: 'moveStart',
 	        value: function moveStart() {
 	            this.mousedown = true;
 	        }
+
+	        /**
+	         * If the mouse is down and moving, then change te position to the position of the mouse
+	         * @param event
+	         */
+
+	    }, {
+	        key: 'moveElement',
+	        value: function moveElement(event) {
+	            if (this.mousedown) {
+	                var position = this.getPosition(event);
+	                this.setPosition(position.x, position.y);
+	                this.positionchanged = true;
+	            }
+	        }
+
+	        /**
+	         * If the mouse is up again and the position of the dot has changed, then save the new location
+	         * @param event
+	         */
+
 	    }, {
 	        key: 'moveStop',
 	        value: function moveStop(event) {
@@ -15774,26 +15799,62 @@
 	                this.positionchanged = false;
 	            }
 	        }
-	    }, {
-	        key: 'moveElement',
-	        value: function moveElement(event) {
-	            if (this.mousedown) {
-	                var position = this.getPosition(event);
-	                this.setPosition(position.x, position.y);
-	                this.positionchanged = true;
-	            }
-	        }
+
+	        /**
+	         * If a new color is chosen, delete the class of the dot with the current color and
+	         * replace it with the new color class
+	         */
+
 	    }, {
 	        key: 'setColor',
 	        value: function setColor() {
+	            this.$el.removeClass(function (index, css) {
+	                return (css.match(/\bannotation--\S+/g) || []).join(' ');
+	            });
 	            this.$el.addClass("annotation--" + this.model.get('color'));
 	        }
+
+	        /**
+	         * Save new chosen color
+	         * @param event
+	         */
+
 	    }, {
 	        key: 'changeColor',
 	        value: function changeColor(event) {
 	            var color = (0, _jquery2.default)(event.target).data('color');
 	            this.model.save({ color: color });
 	        }
+
+	        /**
+	         * Save new chosen title
+	         * @param event
+	         */
+
+	    }, {
+	        key: 'changeTitle',
+	        value: function changeTitle(event) {
+	            var title = (0, _jquery2.default)(event.target).val();
+	            this.model.save({ title: title });
+	        }
+
+	        /**
+	         * Save new chosen description
+	         * @param event
+	         */
+
+	    }, {
+	        key: 'changeDescription',
+	        value: function changeDescription(event) {
+	            var description = (0, _jquery2.default)(event.target).val();
+	            this.model.save({ description: description });
+	        }
+
+	        /**
+	         * Sets the size on the canvas
+	         * @param size
+	         */
+
 	    }, {
 	        key: 'setSize',
 	        value: function setSize(size) {
@@ -15823,7 +15884,7 @@
 	        }
 
 	        /**
-	         * Gives the position of the annotation relative to the canvas
+	         * Gives the position of the annotation relative to the canvas and checks if it is not outside the canvas
 	         * @param event
 	         * @returns {{x: number, y: number}}
 	         */
@@ -15832,27 +15893,48 @@
 	        key: 'getPosition',
 	        value: function getPosition(event) {
 	            var canvas = (0, _jquery2.default)("#canvas");
+	            var x = void 0,
+	                y = void 0;
 
 	            // relative position in pixels
 	            var relativeX = event.clientX - canvas.offset().left - this.$el.width() / 2;
 	            var relativeY = event.clientY - canvas.offset().top - this.$el.height() / 2;
 
-	            // relative position in procenten
-	            var x = relativeX / canvas.width() * 100;
-	            var y = relativeY / canvas.height() * 100;
+	            // relative position in percentage with check if the position is in the canvas
+	            if (relativeX > 0 && relativeX < canvas.width() - this.$el.width()) {
+	                x = relativeX / canvas.width() * 100;
+	            } else {
+	                x = Number(this.$el.css('left').replace(/[^-\d\.]/g, '')) / canvas.width() * 100;
+	            }
+
+	            if (relativeY > 0 && relativeY < canvas.height() - this.$el.height()) {
+	                y = relativeY / canvas.height() * 100;
+	            } else {
+	                y = Number(this.$el.css('top').replace(/[^-\d\.]/g, '')) / canvas.height() * 100;
+	            }
 
 	            return { x: x, y: y };
 	        }
+
+	        /**
+	         * Open detail popup
+	         */
+
 	    }, {
 	        key: 'openDetails',
 	        value: function openDetails() {
-	            (0, _jquery2.default)('.annotation__details').removeClass("annotation__details--visible");
-	            this.$('.annotation__details').addClass("annotation__details--visible");
+	            (0, _jquery2.default)(".annotation__details").removeClass("annotation__details--visible");
+	            this.$(".annotation__details").addClass("annotation__details--visible");
 	        }
+
+	        /**
+	         * Close detail popup
+	         */
+
 	    }, {
 	        key: 'closeDetails',
 	        value: function closeDetails() {
-	            this.$('.annotation__details').removeClass("annotation__details--visible");
+	            this.$(".annotation__details").removeClass("annotation__details--visible");
 	        }
 	    }]);
 
@@ -15877,7 +15959,197 @@
 
 	var _jquery2 = _interopRequireDefault(_jquery);
 
-	var _underscore = __webpack_require__(5);
+	var _underscore = __webpack_require__(8);
+
+	var _underscore2 = _interopRequireDefault(_underscore);
+
+	var _backbone = __webpack_require__(1);
+
+	var _AnnotationView = __webpack_require__(9);
+
+	var _AnnotationView2 = _interopRequireDefault(_AnnotationView);
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+	function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; } /**
+	                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                * Created by Lennart on 20-11-16.
+	                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                */
+
+	/**
+	 * This view contains a form to create a new annotation and a canvas where the annotations are shown. These are shown as dots.
+	 */
+	var AnnotationsView = function (_View) {
+	    _inherits(AnnotationsView, _View);
+
+	    function AnnotationsView() {
+	        _classCallCheck(this, AnnotationsView);
+
+	        return _possibleConstructorReturn(this, (AnnotationsView.__proto__ || Object.getPrototypeOf(AnnotationsView)).apply(this, arguments));
+	    }
+
+	    _createClass(AnnotationsView, [{
+	        key: 'initialize',
+	        value: function initialize() {
+	            this.template = _underscore2.default.template((0, _jquery2.default)('#template-list').html());
+	            var self = this;
+	            this.collection.fetch({
+	                success: function success() {
+	                    self.render();
+	                }
+	            });
+	        }
+	    }, {
+	        key: 'events',
+	        value: function events() {}
+	    }, {
+	        key: 'tagName',
+	        value: function tagName() {
+	            return "table";
+	        }
+	    }, {
+	        key: 'id',
+	        value: function id() {
+	            return "annotations-list";
+	        }
+	    }, {
+	        key: 'className',
+	        value: function className() {
+	            return "table table-striped";
+	        }
+	    }, {
+	        key: 'render',
+	        value: function render() {
+	            var data = {
+	                collection: this.collection
+	            };
+
+	            this.$el.html(this.template(data));
+
+	            return this;
+	        }
+	    }]);
+
+	    return AnnotationsView;
+	}(_backbone.View);
+
+	exports.default = AnnotationsView;
+
+/***/ },
+/* 11 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	Object.defineProperty(exports, "__esModule", {
+	    value: true
+	});
+
+	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+	var _jquery = __webpack_require__(3);
+
+	var _jquery2 = _interopRequireDefault(_jquery);
+
+	var _underscore = __webpack_require__(8);
+
+	var _underscore2 = _interopRequireDefault(_underscore);
+
+	var _backbone = __webpack_require__(1);
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+	function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; } /**
+	                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                * Created by Lennart on 11-12-16.
+	                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                */
+
+	var NavigationView = function (_View) {
+	    _inherits(NavigationView, _View);
+
+	    function NavigationView() {
+	        _classCallCheck(this, NavigationView);
+
+	        return _possibleConstructorReturn(this, (NavigationView.__proto__ || Object.getPrototypeOf(NavigationView)).apply(this, arguments));
+	    }
+
+	    _createClass(NavigationView, [{
+	        key: 'initialize',
+	        value: function initialize(router) {
+	            this.router = router;
+	            this.pages = [{ href: "app", title: "App" }, { href: "annotations", title: "Annotations" }, { href: "clock", title: "Clock" }];
+	        }
+	    }, {
+	        key: 'events',
+	        value: function events() {
+	            return {
+	                "click .nav-item": "navigate"
+	            };
+	        }
+	    }, {
+	        key: 'tagName',
+	        value: function tagName() {
+	            return "ul";
+	        }
+	    }, {
+	        key: 'id',
+	        value: function id() {
+	            return "navigation";
+	        }
+	    }, {
+	        key: 'className',
+	        value: function className() {
+	            return "nav navbar-nav";
+	        }
+	    }, {
+	        key: 'navigate',
+	        value: function navigate(event) {
+	            var link = (0, _jquery2.default)(event.target).data('link');
+	            event.preventDefault();
+	            this.router.navigate(link, { trigger: true });
+	        }
+	    }, {
+	        key: 'render',
+	        value: function render() {
+	            var _this2 = this;
+
+	            this.$el.html();
+
+	            this.pages.forEach(function (item) {
+	                _this2.$el.append('<li><a data-link="' + item.href + '" class="nav-item">' + item.title + '</a></li>');
+	            });
+	            return this;
+	        }
+	    }]);
+
+	    return NavigationView;
+	}(_backbone.View);
+
+	exports.default = NavigationView;
+
+/***/ },
+/* 12 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	Object.defineProperty(exports, "__esModule", {
+	    value: true
+	});
+
+	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+	var _jquery = __webpack_require__(3);
+
+	var _jquery2 = _interopRequireDefault(_jquery);
+
+	var _underscore = __webpack_require__(8);
 
 	var _underscore2 = _interopRequireDefault(_underscore);
 

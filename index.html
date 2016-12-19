@@ -6,15 +6,71 @@
     <link rel="stylesheet" href="style/main.css">
     <link href="https://fonts.googleapis.com/css?family=Roboto" rel="stylesheet">
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <!-- Latest compiled and minified CSS -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"
+          integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+
 </head>
 <body>
 
-<div id="app"></div>
+<nav class="navbar navbar-default">
+    <div class="container">
+        <div class="navbar-header">
+            <span class="navbar-brand">Annotations App</span>
+        </div>
+        <div class="collapse navbar-collapse" id="navigation">
 
+            <div class="navbar-right">
+                <p class="navbar-text">Made by Lennart Veringmeier - 0893738</p>
+            </div>
+        </div>
+    </div>
+</nav>
+
+<div class="container">
+    <div id="app" class="col-md-8 col-md-offset-2"></div>
+</div>
 
 <script id="template-canvas" type="text/html">
-    <div id="canvas"></div>
-    <button id="add-annotation"><%= addButton %></button>
+    <div class="row">
+        <div class="col-sm-3">
+            <input type="text" id="annotation-title" placeholder="title">
+            <textarea id="annotation-description" placeholder="description"></textarea>
+            <select id="annotation-color">
+                <option value="blue">Blue</option>
+                <option value="green">Green</option>
+                <option value="red">Red</option>
+                <option value="orange">Orange</option>
+            </select>
+            <button id="add-annotation" title="<%= addButton %>"><i class="material-icons annotation__delete">add</i>
+            </button>
+        </div>
+        <div id="canvas" class="col-sm-9"></div>
+    </div>
+</script>
+
+<script id="template-list" type="text/html">
+    <thead>
+    <tr>
+        <th>Title</th>
+        <th>Color</th>
+        <th>Description</th>
+    </tr>
+    </thead>
+    <tbody>
+    <%
+    collection.each((model) => {
+    model = model.toJSON();
+    %>
+    <tr>
+        <td><%= model.title %></td>
+        <td><%= model.color %></td>
+        <td><%= model.description %></td>
+    </tr>
+    <%
+    });
+    %>
+    </tbody>
 </script>
 
 <script id="template-annotation" type="text/html">
@@ -26,8 +82,8 @@
         <div class="annotation__color annotation__color--orange" data-color="orange"></div>
         <i class="material-icons annotation__close-details">close</i>
         <i class="material-icons annotation__delete">delete</i>
-        <h3><%= title %></h3>
-        <p><%= description %></p>
+        <input type="text" class="annotation__title" value="<%= title %>">
+        <textarea class="annotation__description"><%= description %></textarea>
     </div>
 </script>
 
@@ -40,5 +96,13 @@
 </script>
 
 <script type="text/javascript" src="dist/bundle.js"></script>
+<!-- Latest compiled and minified JavaScript and jQuery for bootstrap -->
+<script
+        src="https://code.jquery.com/jquery-3.1.1.slim.min.js"
+        integrity="sha256-/SIrNqv8h6QGKDuNoLGA4iret+kyesCkHGzVUUV0shc="
+        crossorigin="anonymous"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"
+        integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa"
+        crossorigin="anonymous"></script>
 </body>
 </html>
