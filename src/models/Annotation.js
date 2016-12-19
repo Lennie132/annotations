@@ -4,10 +4,10 @@
 
 import {Model} from 'backbone';
 
+/**
+ * One model for an annotation
+ */
 export default class Annotation extends Model {
-    //initialize() {
-        //console.log("init: annotation model");
-    //}
 
     defaults() {
         return {

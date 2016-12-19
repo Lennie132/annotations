@@ -5,6 +5,9 @@
 import {Collection} from "backbone";
 import Annotation from '../models/Annotation';
 
+/**
+ * The collection for all the annotations
+ */
 export default class Annotations extends Collection {
     constructor(options) {
         super(options);
