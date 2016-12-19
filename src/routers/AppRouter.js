@@ -1,15 +1,18 @@
 /**
  * Created by Lennart on 20-11-16.
  */
+
 import $ from 'jquery';
-import _ from 'underscore';
 import {Router} from 'backbone';
 import Annotations from '../collections/Annotations';
 import AnnotationsView from '../views/AnnotationsView';
-import AnnotationView from '../views/AnnotationView';
-import Annotation from '../models/Annotation';
+import AnnotationsListView from '../views/AnnotationsListView';
+import NavigationView from '../views/NavigationView';
 import ClockView from '../views/ClockView';
 
+/**
+ * Router for the navigation between pages
+ */
 export default class AppRouter extends Router {
     routes() {
         return {
@@ -19,43 +22,23 @@ export default class AppRouter extends Router {
         };
     }
 
-    app() {
-        var models = [
-            new Annotation({
-                size: 40
-            }),
-            new Annotation({
-                size: 30
-            }),
-            new Annotation({
-                size: 20
-            })
-        ];
+    initialize() {
+        let navigation = new NavigationView(this);
+        $('#navigation').prepend(navigation.render().el);
+    }
 
-        var annotations = new Annotations();
-        var annotationsView = new AnnotationsView({collection: annotations});
+    app() {
+        let annotations = new Annotations();
+        let annotationsView = new AnnotationsView({collection: annotations});
 
         $('#app').html(annotationsView.render().el);
     }
 
     annotations() {
-        $('#app').empty();
+        let annotations = new Annotations();
+        let annotationsListView = new AnnotationsListView({collection: annotations});
 
-        var models = [
-            new Annotation({
-                size: 40
-            }),
-            new Annotation({
-                size: 30
-            }),
-            new Annotation({
-                size: 20
-            })
-        ];
-
-        _(models).each(function (model) {
-            $('#app').append(new AnnotationView({model: model}).render().el);
-        });
+        $('#app').html(annotationsListView.render().el);
     }
 
     clock() {
