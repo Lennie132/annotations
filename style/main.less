@@ -14,6 +14,12 @@ body {
     font-family: 'Roboto', sans-serif;
 }
 
+@media (min-width: 1300px) {
+    body .container {
+        width: 1260px;
+    }
+}
+
 .background__wrapper {
     margin-bottom: 20px;
     .background__icon {
@@ -41,12 +47,12 @@ body {
         background-size: cover;
     }
 
-    .annotation__new-icon {
-        vertical-align: super;
-    }
     .annotation__new-title {
-        width: ~'calc(100% - 28px)';
-        display: inline-block;
+        line-height: 35px;
+        margin: 0;
+        .annotation__new-icon {
+            vertical-align: text-bottom;
+        }
     }
 
     #annotation-title, #annotation-description, #annotation-color, #add-annotation {
@@ -209,10 +215,10 @@ body {
     -webkit-box-shadow: 3px 3px 15px 2px rgba(0, 0, 0, 0.75);
     -moz-box-shadow: 3px 3px 15px 2px rgba(0, 0, 0, 0.75);
     box-shadow: 3px 3px 15px 2px rgba(0, 0, 0, 0.75);
+    font-size: 129px;
+    line-height: 137px;
     span {
         font-family: 'Segment7', monospace;
-        font-size: 120px;
-        line-height: 137px;
         color: #00ff0d;
     }
 }

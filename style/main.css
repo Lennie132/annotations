@@ -5,6 +5,11 @@
 body {
   font-family: 'Roboto', sans-serif;
 }
+@media (min-width: 1300px) {
+  body .container {
+    width: 1260px;
+  }
+}
 .background__wrapper {
   margin-bottom: 20px;
 }
@@ -29,12 +34,12 @@ body {
   -webkit-background-size: cover;
   background-size: cover;
 }
-#canvas-wrapper .annotation__new-icon {
-  vertical-align: super;
-}
 #canvas-wrapper .annotation__new-title {
-  width: calc(100% - 28px);
-  display: inline-block;
+  line-height: 35px;
+  margin: 0;
+}
+#canvas-wrapper .annotation__new-title .annotation__new-icon {
+  vertical-align: text-bottom;
 }
 #canvas-wrapper #annotation-title,
 #canvas-wrapper #annotation-description,
@@ -179,10 +184,10 @@ body {
   -webkit-box-shadow: 3px 3px 15px 2px rgba(0, 0, 0, 0.75);
   -moz-box-shadow: 3px 3px 15px 2px rgba(0, 0, 0, 0.75);
   box-shadow: 3px 3px 15px 2px rgba(0, 0, 0, 0.75);
+  font-size: 129px;
+  line-height: 137px;
 }
 .clock span {
   font-family: 'Segment7', monospace;
-  font-size: 120px;
-  line-height: 137px;
   color: #00ff0d;
 }
