@@ -11,7 +11,7 @@ export default class Background extends Model {
 
     defaults() {
         return {
-            src: "http://localhost/annotations/img/dessert.png"
+            src: "https://stud.hosted.hr.nl/0893738/annotations/img/dessert.png"
         };
     }
 }
