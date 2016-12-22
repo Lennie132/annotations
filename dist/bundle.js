@@ -13875,7 +13875,6 @@
 	    }, {
 	        key: 'app',
 	        value: function app() {
-
 	            var background = new _Background2.default();
 	            var backgroundView = new _BackgroundView2.default({ model: background });
 

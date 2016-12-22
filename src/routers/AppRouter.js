@@ -39,7 +39,6 @@ export default class AppRouter extends Router {
     }
 
     app() {
-
         let background = new Background();
         let backgroundView = new BackgroundView({model: background});
 
