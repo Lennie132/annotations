@@ -5,12 +5,11 @@
 import $ from 'jquery';
 import _ from 'underscore';
 import {View} from 'backbone';
-import AnnotationView from './AnnotationView';
 
 /**
- * This view contains a form to create a new annotation and a canvas where the annotations are shown. These are shown as dots.
+ * This view contains a table where the annotations are shown. This is a readable overview of the annotations.
  */
-export default class AnnotationsView extends View {
+export default class AnnotationsListView extends View {
     initialize() {
         this.template = _.template($('#template-list').html());
         let self = this;
@@ -19,9 +18,6 @@ export default class AnnotationsView extends View {
                 self.render();
             }
         });
-    }
-
-    events() {
     }
 
     tagName() {
@@ -40,7 +36,6 @@ export default class AnnotationsView extends View {
         let data = {
             collection: this.collection
         };
-
         this.$el.html((this.template(data)));
 
         return this;

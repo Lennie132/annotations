@@ -4,6 +4,9 @@
 
 import {View} from 'backbone';
 
+/**
+ * This is a navigation item with an event to navigate
+ */
 export default class NavigationView extends View {
 
     events() {

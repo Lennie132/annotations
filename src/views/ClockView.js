@@ -6,10 +6,11 @@ import $ from 'jquery';
 import _ from 'underscore';
 import {View} from 'backbone';
 
+/**
+ * This is just a fun and simple experiment, but worth to include in this project
+ */
 export default class ClockView extends View {
     initialize() {
-        //console.log("init: clock view");
-
         this.template = _.template($('#template-clock').html());
     }
 
@@ -22,8 +23,8 @@ export default class ClockView extends View {
     }
 
     render() {
-        var date = new Date();
-        var data = {
+        let date = new Date();
+        let data = {
             hours: ("0" + date.getHours()).slice(-2),
             minutes: ("0" + date.getMinutes()).slice(-2),
             seconds: ("0" + date.getSeconds()).slice(-2)
