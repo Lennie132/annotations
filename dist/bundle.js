@@ -13943,7 +13943,7 @@
 
 	        var _this = _possibleConstructorReturn(this, (Annotations.__proto__ || Object.getPrototypeOf(Annotations)).call(this, options));
 
-	        _this.url = "http://lennartv.nl/api/";
+	        _this.url = "https://lennartv.nl/api/";
 	        _this.model = _Annotation2.default;
 	        return _this;
 	    }

@@ -11,7 +11,7 @@ import Annotation from '../models/Annotation';
 export default class Annotations extends Collection {
     constructor(options) {
         super(options);
-        this.url = "http://lennartv.nl/api/";
+        this.url = "https://lennartv.nl/api/";
         this.model = Annotation;
     }
 
