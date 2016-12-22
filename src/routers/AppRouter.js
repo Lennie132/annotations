@@ -5,10 +5,12 @@
 import $ from 'jquery';
 import {Router} from 'backbone';
 import Annotations from '../collections/Annotations';
+import Navigation from '../models/Navigation';
+import Background from '../models/Background';
 import AnnotationsView from '../views/AnnotationsView';
 import AnnotationsListView from '../views/AnnotationsListView';
-import Navigation from '../models/Navigation';
 import NavigationView from '../views/NavigationView';
+import BackgroundView from '../views/BackgroundView';
 import ClockView from '../views/ClockView';
 
 /**
@@ -37,10 +39,15 @@ export default class AppRouter extends Router {
     }
 
     app() {
-        let annotations = new Annotations();
-        let annotationsView = new AnnotationsView({collection: annotations});
 
-        $('#app').html(annotationsView.render().el);
+        let background = new Background();
+        let backgroundView = new BackgroundView({model: background});
+
+        let annotations = new Annotations();
+        let annotationsView = new AnnotationsView({collection: annotations, background_src: background.get('src')});
+
+        $('#app').html(backgroundView.render().el);
+        $('#app').append(annotationsView.render().el);
     }
 
     annotations() {

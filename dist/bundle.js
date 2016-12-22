@@ -13801,6 +13801,14 @@
 
 	var _Annotations2 = _interopRequireDefault(_Annotations);
 
+	var _Navigation = __webpack_require__(13);
+
+	var _Navigation2 = _interopRequireDefault(_Navigation);
+
+	var _Background = __webpack_require__(14);
+
+	var _Background2 = _interopRequireDefault(_Background);
+
 	var _AnnotationsView = __webpack_require__(7);
 
 	var _AnnotationsView2 = _interopRequireDefault(_AnnotationsView);
@@ -13809,13 +13817,13 @@
 
 	var _AnnotationsListView2 = _interopRequireDefault(_AnnotationsListView);
 
-	var _Navigation = __webpack_require__(13);
-
-	var _Navigation2 = _interopRequireDefault(_Navigation);
-
 	var _NavigationView = __webpack_require__(11);
 
 	var _NavigationView2 = _interopRequireDefault(_NavigationView);
+
+	var _BackgroundView = __webpack_require__(15);
+
+	var _BackgroundView2 = _interopRequireDefault(_BackgroundView);
 
 	var _ClockView = __webpack_require__(12);
 
@@ -13867,10 +13875,15 @@
 	    }, {
 	        key: 'app',
 	        value: function app() {
-	            var annotations = new _Annotations2.default();
-	            var annotationsView = new _AnnotationsView2.default({ collection: annotations });
 
-	            (0, _jquery2.default)('#app').html(annotationsView.render().el);
+	            var background = new _Background2.default();
+	            var backgroundView = new _BackgroundView2.default({ model: background });
+
+	            var annotations = new _Annotations2.default();
+	            var annotationsView = new _AnnotationsView2.default({ collection: annotations, background_src: background.get('src') });
+
+	            (0, _jquery2.default)('#app').html(backgroundView.render().el);
+	            (0, _jquery2.default)('#app').append(annotationsView.render().el);
 	        }
 	    }, {
 	        key: 'annotations',
@@ -14037,6 +14050,9 @@
 	                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                * Created by Lennart on 20-11-16.
 	                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                */
 
+	/**
+	 * This view contains a form to create a new annotation and a canvas where the annotations are shown. These are shown as dots.
+	 */
 	var AnnotationsView = function (_View) {
 	    _inherits(AnnotationsView, _View);
 
@@ -14048,13 +14064,20 @@
 
 	    _createClass(AnnotationsView, [{
 	        key: 'initialize',
-	        value: function initialize() {
+	        value: function initialize(options) {
+	            var _this2 = this;
+
+	            this.background_src = options.background_src;
 	            this.template = _underscore2.default.template((0, _jquery2.default)('#template-canvas').html());
 	            var self = this;
 	            this.collection.fetch({
 	                success: function success() {
 	                    self.render();
 	                }
+	            });
+
+	            Backbone.on('changeBackground', function (src) {
+	                _this2.changeBackground(src);
 	            });
 	        }
 	    }, {
@@ -14074,6 +14097,11 @@
 	        value: function id() {
 	            return "canvas-wrapper";
 	        }
+
+	        /**
+	         * Create a new annotation, check the input fields and save it in the collection
+	         */
+
 	    }, {
 	        key: 'createAnnotation',
 	        value: function createAnnotation() {
@@ -14096,11 +14124,24 @@
 	            });
 	            this.render();
 	        }
+
+	        /**
+	         * The custom event gives a source of an image, save this and render the canvas again
+	         * @param src
+	         */
+
+	    }, {
+	        key: 'changeBackground',
+	        value: function changeBackground(src) {
+	            this.background_src = src;
+	            this.render();
+	        }
 	    }, {
 	        key: 'render',
 	        value: function render() {
 	            var data = {
-	                addButton: "Voeg annotatie toe"
+	                addButton: "Add annotation",
+	                background_src: this.background_src
 	            };
 
 	            this.$el.html(this.template(data));
@@ -15978,10 +16019,6 @@
 
 	var _backbone = __webpack_require__(1);
 
-	var _AnnotationView = __webpack_require__(9);
-
-	var _AnnotationView2 = _interopRequireDefault(_AnnotationView);
-
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
@@ -15993,18 +16030,18 @@
 	                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                */
 
 	/**
-	 * This view contains a form to create a new annotation and a canvas where the annotations are shown. These are shown as dots.
+	 * This view contains a table where the annotations are shown. This is a readable overview of the annotations.
 	 */
-	var AnnotationsView = function (_View) {
-	    _inherits(AnnotationsView, _View);
+	var AnnotationsListView = function (_View) {
+	    _inherits(AnnotationsListView, _View);
 
-	    function AnnotationsView() {
-	        _classCallCheck(this, AnnotationsView);
+	    function AnnotationsListView() {
+	        _classCallCheck(this, AnnotationsListView);
 
-	        return _possibleConstructorReturn(this, (AnnotationsView.__proto__ || Object.getPrototypeOf(AnnotationsView)).apply(this, arguments));
+	        return _possibleConstructorReturn(this, (AnnotationsListView.__proto__ || Object.getPrototypeOf(AnnotationsListView)).apply(this, arguments));
 	    }
 
-	    _createClass(AnnotationsView, [{
+	    _createClass(AnnotationsListView, [{
 	        key: 'initialize',
 	        value: function initialize() {
 	            this.template = _underscore2.default.template((0, _jquery2.default)('#template-list').html());
@@ -16015,9 +16052,6 @@
 	                }
 	            });
 	        }
-	    }, {
-	        key: 'events',
-	        value: function events() {}
 	    }, {
 	        key: 'tagName',
 	        value: function tagName() {
@@ -16039,17 +16073,16 @@
 	            var data = {
 	                collection: this.collection
 	            };
-
 	            this.$el.html(this.template(data));
 
 	            return this;
 	        }
 	    }]);
 
-	    return AnnotationsView;
+	    return AnnotationsListView;
 	}(_backbone.View);
 
-	exports.default = AnnotationsView;
+	exports.default = AnnotationsListView;
 
 /***/ },
 /* 11 */
@@ -16073,6 +16106,9 @@
 	                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                * Created by Lennart on 11-12-16.
 	                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                */
 
+	/**
+	 * This is a navigation item with an event to navigate
+	 */
 	var NavigationView = function (_View) {
 	    _inherits(NavigationView, _View);
 
@@ -16152,6 +16188,9 @@
 	                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                * Created by Lennart on 20-11-16.
 	                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                */
 
+	/**
+	 * This is just a fun and simple experiment, but worth to include in this project
+	 */
 	var ClockView = function (_View) {
 	    _inherits(ClockView, _View);
 
@@ -16164,8 +16203,6 @@
 	    _createClass(ClockView, [{
 	        key: 'initialize',
 	        value: function initialize() {
-	            //console.log("init: clock view");
-
 	            this.template = _underscore2.default.template((0, _jquery2.default)('#template-clock').html());
 	        }
 	    }, {
@@ -16251,6 +16288,137 @@
 	}(_backbone.Model);
 
 	exports.default = Navigation;
+
+/***/ },
+/* 14 */
+/***/ function(module, exports, __webpack_require__) {
+
+	"use strict";
+
+	Object.defineProperty(exports, "__esModule", {
+	    value: true
+	});
+
+	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+	var _backbone = __webpack_require__(1);
+
+	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+	function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; } /**
+	                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                * Created by Lennart on 20-11-16.
+	                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                */
+
+	/**
+	 * One model for using your own background image of the canvas
+	 */
+	var Background = function (_Model) {
+	    _inherits(Background, _Model);
+
+	    function Background() {
+	        _classCallCheck(this, Background);
+
+	        return _possibleConstructorReturn(this, (Background.__proto__ || Object.getPrototypeOf(Background)).apply(this, arguments));
+	    }
+
+	    _createClass(Background, [{
+	        key: "defaults",
+	        value: function defaults() {
+	            return {
+	                src: "http://localhost/annotations/img/dessert.png"
+	            };
+	        }
+	    }]);
+
+	    return Background;
+	}(_backbone.Model);
+
+	exports.default = Background;
+
+/***/ },
+/* 15 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	Object.defineProperty(exports, "__esModule", {
+	    value: true
+	});
+
+	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+	var _jquery = __webpack_require__(3);
+
+	var _jquery2 = _interopRequireDefault(_jquery);
+
+	var _underscore = __webpack_require__(8);
+
+	var _underscore2 = _interopRequireDefault(_underscore);
+
+	var _backbone = __webpack_require__(1);
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+	function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; } /**
+	                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                * Created by Lennart on 20-11-16.
+	                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                */
+
+	var BackgroundView = function (_View) {
+	    _inherits(BackgroundView, _View);
+
+	    function BackgroundView() {
+	        _classCallCheck(this, BackgroundView);
+
+	        return _possibleConstructorReturn(this, (BackgroundView.__proto__ || Object.getPrototypeOf(BackgroundView)).apply(this, arguments));
+	    }
+
+	    _createClass(BackgroundView, [{
+	        key: 'initialize',
+	        value: function initialize() {
+	            this.template = _underscore2.default.template((0, _jquery2.default)('#template-background').html());
+	        }
+	    }, {
+	        key: 'events',
+	        value: function events() {
+	            return {
+	                "change .background__src": "changeBackground"
+	            };
+	        }
+	    }, {
+	        key: 'tagName',
+	        value: function tagName() {
+	            return "div";
+	        }
+	    }, {
+	        key: 'className',
+	        value: function className() {
+	            return "background__wrapper";
+	        }
+	    }, {
+	        key: 'changeBackground',
+	        value: function changeBackground() {
+	            this.model.set('src', this.$('.background__src').val());
+	            Backbone.trigger('changeBackground', this.model.get('src'));
+	        }
+	    }, {
+	        key: 'render',
+	        value: function render() {
+	            this.$el.html(this.template(this.model.toJSON()));
+
+	            return this;
+	        }
+	    }]);
+
+	    return BackgroundView;
+	}(_backbone.View);
+
+	exports.default = BackgroundView;
 
 /***/ }
 /******/ ]);

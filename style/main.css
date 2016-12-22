@@ -5,18 +5,41 @@
 body {
   font-family: 'Roboto', sans-serif;
 }
-#canvas {
+.background__wrapper {
+  margin-bottom: 20px;
+}
+.background__wrapper .background__icon {
+  vertical-align: middle;
+}
+.background__wrapper .background__usage {
+  display: inline-block;
+}
+.background__wrapper .background__src {
+  width: 100%;
+  padding: 10px;
+  border: 1px solid #979f9d;
+}
+#canvas-wrapper #canvas {
   position: relative;
   margin: 0 auto;
   padding: 0;
   height: 300px;
   border: 1px solid #979f9d;
-  background-color: #ffffff;
+  background: no-repeat center;
+  -webkit-background-size: cover;
+  background-size: cover;
 }
-#annotation-title,
-#annotation-description,
-#annotation-color,
-#add-annotation {
+#canvas-wrapper .annotation__new-icon {
+  vertical-align: super;
+}
+#canvas-wrapper .annotation__new-title {
+  width: calc(100% - 28px);
+  display: inline-block;
+}
+#canvas-wrapper #annotation-title,
+#canvas-wrapper #annotation-description,
+#canvas-wrapper #annotation-color,
+#canvas-wrapper #add-annotation {
   width: 100%;
   min-width: 100%;
   max-width: 100%;
@@ -26,13 +49,13 @@ body {
   color: #979f9d;
   border: 1px solid #979f9d;
 }
-#add-annotation {
+#canvas-wrapper #add-annotation {
   background-color: #606c68;
   padding-bottom: 5px;
   color: white;
   border: none;
 }
-#add-annotation:hover {
+#canvas-wrapper #add-annotation:hover {
   background-color: forestgreen;
 }
 .annotation {
@@ -98,8 +121,8 @@ body {
   border: 3px solid #1d771d;
 }
 .annotation .annotation__details .annotation__color.annotation__color--red {
-  background-color: rgba(217, 0, 0, 0.81);
-  border: 3px solid rgba(192, 0, 0, 0.81);
+  background-color: #D90000;
+  border: 3px solid #c00000;
 }
 .annotation .annotation__details .annotation__color.annotation__color--orange {
   background-color: #eb9416;
@@ -132,11 +155,11 @@ body {
   border: 2px solid steelblue;
 }
 .annotation.annotation--red .annotation__dot {
-  background-color: rgba(217, 0, 0, 0.81);
-  border: 3px solid rgba(192, 0, 0, 0.81);
+  background-color: #D90000;
+  border: 3px solid #c00000;
 }
 .annotation.annotation--red .annotation__details {
-  border: 2px solid rgba(217, 0, 0, 0.81);
+  border: 2px solid #D90000;
 }
 .annotation.annotation--orange .annotation__dot {
   background-color: #eb9416;

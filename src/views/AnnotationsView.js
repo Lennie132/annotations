@@ -7,15 +7,22 @@ import _ from 'underscore';
 import {View} from 'backbone';
 import AnnotationView from './AnnotationView';
 
-
+/**
+ * This view contains a form to create a new annotation and a canvas where the annotations are shown. These are shown as dots.
+ */
 export default class AnnotationsView extends View {
-    initialize() {
+    initialize(options) {
+        this.background_src = options.background_src;
         this.template = _.template($('#template-canvas').html());
         let self = this;
         this.collection.fetch({
             success: function () {
                 self.render();
             }
+        });
+
+        Backbone.on('changeBackground',(src) => {
+            this.changeBackground(src);
         });
     }
 
@@ -33,6 +40,9 @@ export default class AnnotationsView extends View {
         return "canvas-wrapper";
     }
 
+    /**
+     * Create a new annotation, check the input fields and save it in the collection
+     */
     createAnnotation() {
         let title = this.$('#annotation-title').val();
         let description = this.$('#annotation-description').val();
@@ -54,9 +64,19 @@ export default class AnnotationsView extends View {
         this.render();
     }
 
+    /**
+     * The custom event gives a source of an image, save this and render the canvas again
+     * @param src
+     */
+    changeBackground(src) {
+        this.background_src = src;
+        this.render();
+    }
+
     render() {
         let data = {
-            addButton: "Voeg annotatie toe"
+            addButton: "Add annotation",
+            background_src: this.background_src
         };
 
         this.$el.html((this.template(data)));

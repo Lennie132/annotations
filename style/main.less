@@ -3,8 +3,7 @@
 @green: forestgreen;
 @blue: steelblue;
 @orange: #eb9416;
-@red: rgba(217, 0, 0, 0.81);
-
+@red: #D90000;
 
 @font-face {
     font-family: 'Segment7';
@@ -15,33 +14,60 @@ body {
     font-family: 'Roboto', sans-serif;
 }
 
-#canvas {
-    position: relative;
-    margin: 0 auto;
-    padding: 0;
-    height: 300px;
-    border: 1px solid @grey;
-    background-color: #ffffff;
+.background__wrapper {
+    margin-bottom: 20px;
+    .background__icon {
+        vertical-align: middle;
+    }
+    .background__usage {
+        display: inline-block;
+    }
+    .background__src {
+        width: 100%;
+        padding: 10px;
+        border: 1px solid @grey;
+    }
 }
 
-#annotation-title, #annotation-description, #annotation-color, #add-annotation {
-    width: 100%;
-    min-width: 100%;
-    max-width: 100%;
-    max-height: 143px;
-    margin: 0 0 15px 0;
-    padding: 10px 14px;
-    color: @grey;
-    border: 1px solid @grey;
-}
+#canvas-wrapper {
+    #canvas {
+        position: relative;
+        margin: 0 auto;
+        padding: 0;
+        height: 300px;
+        border: 1px solid @grey;
+        background: no-repeat center;
+        -webkit-background-size: cover;
+        background-size: cover;
+    }
 
-#add-annotation {
-    background-color: @grey-dark;
-    padding-bottom: 5px;
-    color: white;
-    border: none;
-    &:hover {
-        background-color: @green;
+    .annotation__new-icon {
+        vertical-align: super;
+    }
+    .annotation__new-title {
+        width: ~'calc(100% - 28px)';
+        display: inline-block;
+    }
+
+    #annotation-title, #annotation-description, #annotation-color, #add-annotation {
+        width: 100%;
+        min-width: 100%;
+        max-width: 100%;
+        max-height: 143px;
+        margin: 0 0 15px 0;
+        padding: 10px 14px;
+        color: @grey;
+        border: 1px solid @grey;
+    }
+
+    #add-annotation {
+        background-color: @grey-dark;
+        padding-bottom: 5px;
+        color: white;
+        border: none;
+        &:hover {
+            background-color: @green;
+        }
     }
 }
 
@@ -121,7 +147,7 @@ body {
 
         .annotation__title {
             width: 100%;
-            margin-bottom:5px;
+            margin-bottom: 5px;
             border: none;
             font-weight: bold;
         }
