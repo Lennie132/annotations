@@ -2,19 +2,9 @@
  * Created by Lennart on 11-12-16.
  */
 
-import $ from 'jquery';
-import _ from 'underscore';
 import {View} from 'backbone';
 
 export default class NavigationView extends View {
-    initialize(router) {
-        this.router = router;
-        this.pages = [
-            {href: "app", title: "App"},
-            {href: "annotations", title: "Annotations"},
-            {href: "clock", title: "Clock"}
-        ];
-    }
 
     events() {
         return {
@@ -23,28 +13,21 @@ export default class NavigationView extends View {
     }
 
     tagName() {
-        return "ul";
-    }
-    id() {
-        return "navigation";
+        return "li";
     }
 
-    className() {
-        return "nav navbar-nav";
-}
-
+    /**
+     * Navigate to the chosen page
+     * @param event
+     */
     navigate(event) {
-        let link = $(event.target).data('link');
         event.preventDefault();
-        this.router.navigate(link, {trigger: true});
+        Backbone.history.navigate(this.model.get('href'), true);
     }
 
     render() {
-        this.$el.html();
+        this.$el.html('<a href="' + this.model.get('href') + '" class="nav-item">' + this.model.get('title') + '</a>');
 
-        this.pages.forEach((item) => {
-            this.$el.append('<li><a data-link="' + item.href + '" class="nav-item">' + item.title + '</a></li>');
-        });
         return this;
     }
 

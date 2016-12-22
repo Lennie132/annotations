@@ -57,14 +57,17 @@
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 	/**
+	 * The app is created here, via the router the content is shown
+	 */
+	/**
 	 * Created by Lennart on 20-11-16.
 	 */
 
 	var init = function init() {
-	    var router = new _AppRouter2.default();
-	    _backbone2.default.history.start();
+	  var router = new _AppRouter2.default();
+	  _backbone2.default.history.start();
 
-	    router.navigate('app', { trigger: true });
+	  router.navigate('app', { trigger: true });
 	};
 
 	init();
@@ -13806,6 +13809,10 @@
 
 	var _AnnotationsListView2 = _interopRequireDefault(_AnnotationsListView);
 
+	var _Navigation = __webpack_require__(13);
+
+	var _Navigation2 = _interopRequireDefault(_Navigation);
+
 	var _NavigationView = __webpack_require__(11);
 
 	var _NavigationView2 = _interopRequireDefault(_NavigationView);
@@ -13848,8 +13855,14 @@
 	    }, {
 	        key: 'initialize',
 	        value: function initialize() {
-	            var navigation = new _NavigationView2.default(this);
-	            (0, _jquery2.default)('#navigation').prepend(navigation.render().el);
+	            var _this2 = this;
+
+	            var pages = [{ title: "App", href: "app" }, { title: "Annotations", href: "annotations" }, { title: "Clock", href: "clock" }];
+
+	            pages.forEach(function (page) {
+	                var navigationView = new _NavigationView2.default({ model: new _Navigation2.default(page), router: _this2 });
+	                (0, _jquery2.default)('#navigation').append(navigationView.render().el);
+	            });
 	        }
 	    }, {
 	        key: 'app',
@@ -16042,7 +16055,7 @@
 /* 11 */
 /***/ function(module, exports, __webpack_require__) {
 
-	'use strict';
+	"use strict";
 
 	Object.defineProperty(exports, "__esModule", {
 	    value: true
@@ -16050,17 +16063,7 @@
 
 	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
-	var _jquery = __webpack_require__(3);
-
-	var _jquery2 = _interopRequireDefault(_jquery);
-
-	var _underscore = __webpack_require__(8);
-
-	var _underscore2 = _interopRequireDefault(_underscore);
-
 	var _backbone = __webpack_require__(1);
-
-	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
@@ -16080,50 +16083,34 @@
 	    }
 
 	    _createClass(NavigationView, [{
-	        key: 'initialize',
-	        value: function initialize(router) {
-	            this.router = router;
-	            this.pages = [{ href: "app", title: "App" }, { href: "annotations", title: "Annotations" }, { href: "clock", title: "Clock" }];
-	        }
-	    }, {
-	        key: 'events',
+	        key: "events",
 	        value: function events() {
 	            return {
 	                "click .nav-item": "navigate"
 	            };
 	        }
 	    }, {
-	        key: 'tagName',
+	        key: "tagName",
 	        value: function tagName() {
-	            return "ul";
+	            return "li";
 	        }
+
+	        /**
+	         * Navigate to the chosen page
+	         * @param event
+	         */
+
 	    }, {
-	        key: 'id',
-	        value: function id() {
-	            return "navigation";
-	        }
-	    }, {
-	        key: 'className',
-	        value: function className() {
-	            return "nav navbar-nav";
-	        }
-	    }, {
-	        key: 'navigate',
+	        key: "navigate",
 	        value: function navigate(event) {
-	            var link = (0, _jquery2.default)(event.target).data('link');
 	            event.preventDefault();
-	            this.router.navigate(link, { trigger: true });
+	            Backbone.history.navigate(this.model.get('href'), true);
 	        }
 	    }, {
-	        key: 'render',
+	        key: "render",
 	        value: function render() {
-	            var _this2 = this;
+	            this.$el.html('<a href="' + this.model.get('href') + '" class="nav-item">' + this.model.get('title') + '</a>');
 
-	            this.$el.html();
-
-	            this.pages.forEach(function (item) {
-	                _this2.$el.append('<li><a data-link="' + item.href + '" class="nav-item">' + item.title + '</a></li>');
-	            });
 	            return this;
 	        }
 	    }]);
@@ -16215,6 +16202,55 @@
 	}(_backbone.View);
 
 	exports.default = ClockView;
+
+/***/ },
+/* 13 */
+/***/ function(module, exports, __webpack_require__) {
+
+	"use strict";
+
+	Object.defineProperty(exports, "__esModule", {
+	    value: true
+	});
+
+	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+	var _backbone = __webpack_require__(1);
+
+	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+	function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; } /**
+	                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                * Created by Lennart on 20-11-16.
+	                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                */
+
+	/**
+	 * One model for an menu item
+	 */
+	var Navigation = function (_Model) {
+	    _inherits(Navigation, _Model);
+
+	    function Navigation() {
+	        _classCallCheck(this, Navigation);
+
+	        return _possibleConstructorReturn(this, (Navigation.__proto__ || Object.getPrototypeOf(Navigation)).apply(this, arguments));
+	    }
+
+	    _createClass(Navigation, [{
+	        key: "defaults",
+	        value: function defaults() {
+	            return {
+	                title: "Menu item",
+	                href: "link"
+	            };
+	        }
+	    }]);
+
+	    return Navigation;
+	}(_backbone.Model);
+
+	exports.default = Navigation;
 
 /***/ }
 /******/ ]);

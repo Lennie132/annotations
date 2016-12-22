@@ -7,6 +7,7 @@ import {Router} from 'backbone';
 import Annotations from '../collections/Annotations';
 import AnnotationsView from '../views/AnnotationsView';
 import AnnotationsListView from '../views/AnnotationsListView';
+import Navigation from '../models/Navigation';
 import NavigationView from '../views/NavigationView';
 import ClockView from '../views/ClockView';
 
@@ -23,8 +24,16 @@ export default class AppRouter extends Router {
     }
 
     initialize() {
-        let navigation = new NavigationView(this);
-        $('#navigation').prepend(navigation.render().el);
+        let pages = [
+            {title: "App", href: "app"},
+            {title: "Annotations", href: "annotations"},
+            {title: "Clock", href: "clock"}
+        ];
+
+        pages.forEach((page) => {
+            let navigationView = new NavigationView({model: new Navigation(page), router: this});
+            $('#navigation').append(navigationView.render().el);
+        });
     }
 
     app() {
