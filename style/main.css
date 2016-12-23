@@ -10,6 +10,10 @@ body {
     width: 1260px;
   }
 }
+.navbar-image {
+  padding: 5px;
+  max-height: 50px;
+}
 .background__wrapper {
   margin-bottom: 20px;
 }
